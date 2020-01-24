@@ -23,12 +23,14 @@ class BenchmarkScattering1D:
                 "Q": 12,
                 "shape": 131072,
             },
+        ],
+        [
+            32,
         ]
     ]
-    param_names = ["sc_params"]
+    param_names = ["sc_params", "batch_size"]
 
-    def setup(self, sc_params):
-        batch_size = 32
+    def setup(self, sc_params, batch_size):
         n_channels = 1
         scattering = Scattering1D(**sc_params)
         scattering.cpu()
@@ -41,8 +43,8 @@ class BenchmarkScattering1D:
         self.scattering = scattering
         self.x = x
 
-    def time_constructor(self, sc_params):
+    def time_constructor(self, sc_params, batch_size):
         Scattering1D(**sc_params)
 
-    def time_forward(self, sc_params):
+    def time_forward(self, sc_params, batch_size):
         (self.scattering).forward(self.x)
