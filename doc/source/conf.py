@@ -68,7 +68,7 @@ sphinx_gallery_conf = {
     'examples_dirs': ['../../examples/1d','../../examples/2d','../../examples/3d'],
     # path where to save gallery generated examples
     'gallery_dirs': ['gallery_1d','gallery_2d','gallery_3d'],
-    'ignore_pattern':
+    'ignore_pattern': ['plot_mnist_classify.py']
     '__init__.py',
 }
 
