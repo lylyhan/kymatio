@@ -166,6 +166,8 @@ def main():
                         help='network_type')
     parser.add_argument('--num_samples', type=int, default=50,
                         help='samples per class')
+    parser.add_argument('--learning_schedule_multi', type=int, default=10,
+                        help='samples per class')
     parser.add_argument('--seed', type=int, default=0,
                         help='seed for dataset subselection')
     parser.add_argument('--width', type=int, default=2,help='width factor for resnet')
@@ -225,8 +227,9 @@ def main():
 
     # Optimizer
     lr = 0.1
-    drops = [60,120,160]
-    for epoch in range(0, 200):
+    M = args.learning_schedule_multi
+    drops = [60*M,120*M,160*M]
+    for epoch in range(0, 200*M):
         if epoch in drops or epoch==0:
             optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=0.9,
                                         weight_decay=0.0005)
