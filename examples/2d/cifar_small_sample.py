@@ -187,15 +187,6 @@ def main():
                                                batch_size=32, shuffle=True, num_workers=num_workers,
                                                pin_memory=pin_memory)
 
-    train_loader = torch.utils.data.DataLoader(
-        datasets.CIFAR10(root=scattering_datasets.get_dataset_dir('CIFAR'), train=True, transform=transforms.Compose([
-            transforms.RandomHorizontalFlip(),
-            transforms.RandomCrop(32, 4),
-            transforms.ToTensor(),
-            normalize,
-        ]), download=True),
-        batch_size=128, shuffle=True, num_workers=num_workers, pin_memory=pin_memory)
-
     test_loader = torch.utils.data.DataLoader(
         datasets.CIFAR10(root=scattering_datasets.get_dataset_dir('CIFAR'), train=False, transform=transforms.Compose([
             transforms.ToTensor(),
