@@ -206,7 +206,8 @@ def main():
             lr*=0.2
 
         train(model, device, train_loader, optimizer, epoch+1, scattering)
-        test(model, device, test_loader, scattering)
+        if epoch%10==0:
+            test(model, device, test_loader, scattering)
 
 
 
