@@ -25,7 +25,7 @@ class BenchmarkScattering2D:
     param_names = ["sc_params"]
 
     def setup(self, sc_params):
-        batch_size = 1
+        batch_size = 32
         n_channels = 1
         scattering = Scattering2D(**sc_params)
         scattering.cpu()
