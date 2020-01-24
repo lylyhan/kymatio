@@ -17,6 +17,14 @@ import torch.nn as nn
 from numpy.random import RandomState
 import numpy as np
 
+
+class Identity(nn.Module):
+    def __init__(self, *args, **kwargs):
+        super().__init__()
+    def forward(self, x):
+        return x
+
+
 def conv3x3(in_planes, out_planes, stride=1):
     "3x3 convolution with padding"
     return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride,
@@ -174,7 +182,7 @@ def main():
             scattering = scattering.cuda()
     else:
         model = Scattering2dResNet(8, args.width,standard=True).to(device)
-
+        scattering = Identity()
 
 
     # DataLoaders
