@@ -172,6 +172,8 @@ def main():
         model = Scattering2dResNet(K, args.width).to(device)
         if use_cuda:
             scattering = scattering.cuda()
+    else:
+        model = Scattering2dResNet(8, args.width,standard=True).to(device)
 
 
 
