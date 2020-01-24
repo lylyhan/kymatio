@@ -54,18 +54,30 @@ class BasicBlock(nn.Module):
 
 
 class Scattering2dResNet(nn.Module):
-    def __init__(self, in_channels,  k=2, n=4, num_classes=10):
+    def __init__(self, in_channels,  k=2, n=4, num_classes=10,standard=False):
         super(Scattering2dResNet, self).__init__()
         self.inplanes = 16 * k
         self.ichannels = 16 * k
-        self.K = in_channels
-        self.init_conv = nn.Sequential(
-            nn.BatchNorm2d(in_channels, eps=1e-5, affine=False),
-            nn.Conv2d(in_channels, self.ichannels,
-                  kernel_size=3, stride=1, padding=1, bias=False),
-            nn.BatchNorm2d(self.ichannels),
-            nn.ReLU(True)
-        )
+        if standard:
+
+            self.init_conv = nn.Sequential(
+                nn.Conv2d(3, self.ichannels,
+                          kernel_size=3, stride=1, padding=1, bias=False),
+                nn.BatchNorm2d(self.ichannels),
+                nn.ReLU(True)
+            )
+            self.layer1 = self._make_layer(BasicBlock, 16 * k, n)
+            self.standard = True
+        else:
+            self.K = in_channels
+            self.init_conv = nn.Sequential(
+                nn.BatchNorm2d(in_channels, eps=1e-5, affine=False),
+                nn.Conv2d(in_channels, self.ichannels,
+                      kernel_size=3, stride=1, padding=1, bias=False),
+                nn.BatchNorm2d(self.ichannels),
+                nn.ReLU(True)
+            )
+            self.standard = False
 
         self.layer2 = self._make_layer(BasicBlock, 32 * k, n)
         self.layer3 = self._make_layer(BasicBlock, 64 * k, n)
@@ -89,8 +101,13 @@ class Scattering2dResNet(nn.Module):
         return nn.Sequential(*layers)
 
     def forward(self, x):
-        x = x.view(x.size(0), self.K, 8, 8)
+        if not self.standard:
+            x = x.view(x.size(0), self.K, 8, 8)
+
         x = self.init_conv(x)
+
+        if self.standard:
+            x = self.layer1(x)
 
         x = self.layer2(x)
         x = self.layer3(x)
