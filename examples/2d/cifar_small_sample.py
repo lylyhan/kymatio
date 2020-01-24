@@ -198,8 +198,9 @@ def main():
 
     # Optimizer
     lr = 0.1
-    for epoch in range(0, 120):
-        if epoch%60==0:
+    drops = [60,120,160]
+    for epoch in range(0, 200):
+        if epoch in drops or epoch==0:
             optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=0.9,
                                         weight_decay=0.0005)
             lr*=0.2
